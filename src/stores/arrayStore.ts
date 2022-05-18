@@ -1,8 +1,12 @@
-import { Observable } from './observable';
+import { Store } from './store';
 
 export type Predicate<T> = ((value: T) => boolean);
 
-export class ObservableArray<T> extends Observable<T[]> {
+export class ArrayStore<T> extends Store<T[]> {
+  public get count(): number {
+    return this._value.length;
+  }
+
 	public add(arg: T | T[]): void {
     if (Array.isArray(arg)) {
       this.value = [...this._value, ...arg];
@@ -38,8 +42,4 @@ export class ObservableArray<T> extends Observable<T[]> {
 			return this._value.includes(arg);
 		}
 	}
-
-  public count(): number {
-    return this._value.length;
-  }
 }

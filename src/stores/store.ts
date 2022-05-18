@@ -1,12 +1,12 @@
 import { TypedEvent } from '../lib/typedEvent';
 import type { EventCallback } from '../lib/typedEvent';
 
-export interface IObservable<T> {
+export interface IStore<T> {
 	readonly value: T;
 	subscribe(callback: EventCallback<T>): (() => void);
 }
 
-export class Observable<T> implements IObservable<T> {
+export class Store<T> implements IStore<T> {
 	protected _value: T;
 	protected _changed: TypedEvent<T>;
 

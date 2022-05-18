@@ -1,9 +1,9 @@
 import { EaseMethod, cubInOut, interpolate } from '../lib/easing';
-import { Observable } from './observable';
+import { Store } from './store';
 import { FrameTimer } from '../lib/frameTimer';
 import { Signal, ISignal } from '../lib/typedEvent';
 
-export class Tween extends Observable<number> {
+export class Tween extends Store<number> {
 	public duration: number;
 	public easeMethod: EaseMethod;
 	private readonly _timer: FrameTimer;

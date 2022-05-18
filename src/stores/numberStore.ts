@@ -1,6 +1,6 @@
-import { Observable } from './observable';
+import { Store } from './store';
 
-export class ObservableNumber extends Observable<number> {
+export class NumberStore extends Store<number> {
 	public min: number | undefined;
 	public max: number | undefined;
 
