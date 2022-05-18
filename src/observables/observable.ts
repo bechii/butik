@@ -22,6 +22,11 @@ export class Observable<T> implements IObservable<T> {
 		}
 	}
 
+  constructor(value: T) {
+		this._value = this.validateChange(value);
+		this._changed = new TypedEvent<T>();
+	}
+
 	public set(value: T): void {
 		this.value = value;
 	}
@@ -38,10 +43,5 @@ export class Observable<T> implements IObservable<T> {
 		this._changed.addEventListener(callback);
 		callback(this._value);
 		return (): void => this._changed.removeEventListener(callback);
-	}
-
-	constructor(value: T) {
-		this._value = this.validateChange(value);
-		this._changed = new TypedEvent<T>();
 	}
 }

@@ -1,19 +1,25 @@
 import { Observable } from './observable';
 
-type Predicate<T> = ((item: T) => boolean);
+export type Predicate<T> = ((value: T) => boolean);
 
 export class ObservableArray<T> extends Observable<T[]> {
-	public add(item: T): void {
-		this.value = [...this._value, item];
+	public add(arg: T | T[]): void {
+    if (Array.isArray(arg)) {
+      this.value = [...this._value, ...arg];
+    } else {
+      this.value = [...this._value, arg];
+    }
 	}
 
-	public remove(item: T | Predicate<T>): void {
-		if (typeof item === 'function') {
-			const predicate = item as Predicate<T>;
+	public remove(arg: T | T[] | Predicate<T>): void {
+		if (typeof arg === 'function') {
+			const predicate = arg as Predicate<T>;
 			this.value = this._value.filter(predicate);
+		} else if (Array.isArray(arg)) {
+			this.value = this._value.filter((x) => !arg.includes(x));
 		} else {
-			this.value = this._value.filter((x) => x !== item);
-		}
+			this.value = this._value.filter((x) => x !== arg);
+    }
 	}
 
 	public toggle(item: T): void {
@@ -24,12 +30,16 @@ export class ObservableArray<T> extends Observable<T[]> {
 		}
 	}
 
-	public has(item: T | Predicate<T>): boolean {
-		if (typeof item === 'function') {
-			const predicate = item as Predicate<T>;
+	public has(arg: T | Predicate<T>): boolean {
+		if (typeof arg === 'function') {
+			const predicate = arg as Predicate<T>;
 			return this._value.some((x) => predicate(x));
 		} else {
-			return this._value.includes(item);
+			return this._value.includes(arg);
 		}
 	}
+
+  public count(): number {
+    return this._value.length;
+  }
 }
