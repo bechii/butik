@@ -21,7 +21,7 @@ export class Tween extends Store<number> {
 		this._finished = new Signal();
 	}
 
-	protected validateChange(newValue: number): number {
+	protected validate(newValue: number): number {
 		this.stop();
 		return newValue;
 	}
@@ -31,8 +31,7 @@ export class Tween extends Store<number> {
 		const initialValue: number = this._value;
 		this._timer.start(this.duration, (progress: number) => {
 			const t: number = progress / this.duration;
-			this._value = interpolate(initialValue, targetValue, this.easeMethod, t);
-			this._changed.dispatch(this._value);
+			this.value = interpolate(initialValue, targetValue, this.easeMethod, t);
 
 			if (t === 1) {
 				this._finished.dispatch();

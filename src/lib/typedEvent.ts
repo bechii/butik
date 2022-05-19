@@ -1,4 +1,4 @@
-export type EventCallback<T> = (data: T) => void;
+export type EventCallback<T> = (value: T) => void;
 
 export interface ITypedEvent<T> {
 	addEventListener(callback: EventCallback<T>): void;
@@ -20,10 +20,10 @@ export class TypedEvent<T> implements ITypedEvent<T> {
 		this.callbacks.delete(callback);
 	}
 
-	public dispatch(data: T): void {
+	public dispatch(value: T): void {
 		const callbackArray = Array.from(this.callbacks.values());
 		for (const callback of callbackArray) {
-			callback(data);
+			callback(value);
 		}
 	}
 }

@@ -15,17 +15,25 @@ export class Store<T> implements IStore<T> {
 	}
 
 	public set value(value: T) {
-		const newValue = this.validateChange(value);
+		const newValue = this.validate(value);
 		if (this._value !== newValue) {
 			this._value = newValue;
-			this._changed.dispatch(newValue);
+			this.dispatch();
 		}
 	}
 
   constructor(value: T) {
-		this._value = this.validateChange(value);
+		this._value = this.validate(value);
 		this._changed = new TypedEvent<T>();
 	}
+
+  protected validate(newValue: T): T {
+		return newValue;
+	}
+
+  protected dispatch(): void {
+    this._changed.dispatch(this._value);
+  }
 
 	public set(value: T): void {
 		this.value = value;
@@ -33,10 +41,6 @@ export class Store<T> implements IStore<T> {
 
 	public update(updater: (value: T) => T): void {
 		this.value = updater(this._value);
-	}
-
-	protected validateChange(newValue: T): T {
-		return newValue;
 	}
 
 	public subscribe(callback: EventCallback<T>): (() => void) {

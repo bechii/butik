@@ -10,7 +10,7 @@ export class NumberStore extends Store<number> {
 		this.max = max;
 	}
 
-  protected validateChange(newValue: number): number {
+  protected validate(newValue: number): number {
     if (this.min != null && newValue < this.min) {
       return this.min;
     }
