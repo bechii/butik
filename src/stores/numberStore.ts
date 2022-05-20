@@ -15,7 +15,7 @@ export class NumberStore extends Store<number> {
       return this.min;
     }
     if (this.max != null && newValue > this.max) {
-      return this.min;
+      return this.max;
     }
     return newValue;
 	}

@@ -23,11 +23,13 @@
   "types": "dist/types/main.d.ts",
   "scripts": {
     "test": "jest",
+    "test:cov": "jest --coverage",
     "build": "rollup --config",
     "publish": "npm publish"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.3.2",
+    "@types/jest": "^27.5.1",
     "@typescript-eslint/eslint-plugin": "^5.24.0",
     "@typescript-eslint/parser": "^5.24.0",
     "eslint": "^8.15.0",

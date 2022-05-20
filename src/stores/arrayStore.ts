@@ -18,7 +18,7 @@ export class ArrayStore<T> extends Store<T[]> {
 	public remove(arg: T | T[] | Predicate<T>): void {
 		if (typeof arg === 'function') {
 			const predicate = arg as Predicate<T>;
-			this.value = this._value.filter(predicate);
+			this.value = this._value.filter((x) => !predicate(x));
 		} else if (Array.isArray(arg)) {
 			this.value = this._value.filter((x) => !arg.includes(x));
 		} else {
