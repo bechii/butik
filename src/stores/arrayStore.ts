@@ -3,7 +3,7 @@ import { Store } from './store';
 export type Predicate<T> = ((value: T) => boolean);
 
 export class ArrayStore<T> extends Store<T[]> {
-  public get count(): number {
+  public count(): number {
     return this._value.length;
   }
 
