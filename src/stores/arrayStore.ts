@@ -1,11 +1,20 @@
 import { Store } from './store';
 
-export type Predicate<T> = ((value: T) => boolean);
+export type Predicate<T> = (value: T) => boolean;
 
 export class ArrayStore<T> extends Store<T[]> {
   public count(): number {
     return this._value.length;
   }
+
+  public has(arg: T | Predicate<T>): boolean {
+		if (typeof arg === 'function') {
+			const predicate = arg as Predicate<T>;
+			return this._value.some((x) => predicate(x));
+		} else {
+			return this._value.includes(arg);
+		}
+	}
 
 	public add(arg: T | T[]): void {
     if (Array.isArray(arg)) {
@@ -31,15 +40,6 @@ export class ArrayStore<T> extends Store<T[]> {
 			this.remove(item);
 		} else {
 			this.add(item);
-		}
-	}
-
-	public has(arg: T | Predicate<T>): boolean {
-		if (typeof arg === 'function') {
-			const predicate = arg as Predicate<T>;
-			return this._value.some((x) => predicate(x));
-		} else {
-			return this._value.includes(arg);
 		}
 	}
 }

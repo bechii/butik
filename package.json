@@ -1,6 +1,6 @@
 {
   "name": "butik",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A fresh alternative to Svelte's built-in stores",
   "author": "Simon Bechmann",
   "license": "MIT",
