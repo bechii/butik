@@ -23,7 +23,7 @@ The subscribe method returns a method to unsubscribe.
   
 ```
 get value(): T
-subscribe(callback: (value: T) => void): (() => void)
+subscribe(callback: (value: T) => void): () => void
 ```
 
 </details>

@@ -3,7 +3,7 @@ import type { EventCallback } from '../lib/typedEvent';
 
 export interface IStore<T> {
 	readonly value: T;
-	subscribe(callback: EventCallback<T>): (() => void);
+	subscribe(callback: EventCallback<T>): () => void;
 }
 
 export class Store<T> implements IStore<T> {
