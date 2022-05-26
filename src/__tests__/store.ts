@@ -9,12 +9,6 @@ describe('Store', () => {
     expect(store.value).toBe(5);
   });
 
-  it('Can update value', () => {
-    expect(store.value).toBe(5);
-    store.update((x) => x * 2);
-    expect(store.value).toBe(10);
-  });
-
   it('Dispatch changes', () => {
     let dispatches: number = 0;
     store.subscribe(() => {

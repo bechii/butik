@@ -39,10 +39,6 @@ export class Store<T> implements IStore<T> {
 		this.value = value;
 	}
 
-	public update(updater: (value: T) => T): void {
-		this.value = updater(this._value);
-	}
-
 	public subscribe(callback: EventCallback<T>): (() => void) {
 		this._changed.addEventListener(callback);
 		callback(this._value);
