@@ -10,6 +10,31 @@ npm i butik
 
 ## ⚡ Quick example
 
+```
+// stores.ts
+
+import { ArrayStore } from 'butik';
+
+export const store = new ArrayStore<string>([]);
+```
+
+```
+// Svelte component
+
+<script lang="ts">
+  import { store } from '$lib/stores';
+
+  const options = ['item 1', 'item 2', 'item 3', 'item 4'];
+</script>
+
+{#each options as option}
+  <input type="checkbox"
+    checked={store.has(option)}
+    on:change={() => store.toggle(option)}
+  >
+{/each}
+```
+
 ## 🔨 API
 Even though this package is meant to be used with Svelte there is no hard link between them, thus it can be used anywhere.
 Butik's stores follows the [store contract](https://svelte.dev/docs#component-format-script-4-prefix-stores-with-$-to-access-their-values) allowing ```$```-prefixing for stuff like auto-subscriptions and two-way data binding.
@@ -37,11 +62,24 @@ This is the base class for all editable stores and can also be used on its own.
 ```
 set value(value: T)
 set(value: T): void
-update(updater: (value: T) => T): void
 ```
 
 ```
-CODE EXAMPLE
+// stores.ts
+
+import { Store } from 'butik';
+
+export const store = new Store<string>('');
+```
+
+```
+// Svelte component
+
+<script lang="ts">
+  import { store } from '$lib/stores';
+</script>
+
+<input type="text" bind:value={$store}/>
 ```
 
 </details>
@@ -54,7 +92,27 @@ constructor(store: IStore<T>, derive: (value: T) => U)
 ```
 
 ```
-CODE EXAMPLE
+// stores.ts
+
+import { Store, DerivedStore } from 'butik';
+
+export const store = new Store<string>('');
+
+const regEx = new RegExp(/^(?!.*\s).{4,30}$/);
+export const derivedStore = new DerivedStore(store, (value) => {
+  return regEx.test(value);
+});
+```
+
+```
+// Svelte component
+
+<script lang="ts">
+  import { store, derivedStore } from '$lib/stores';
+</script>
+
+<input type="text" bind:value={$store}/>
+<button disabled={!$derivedStore}>Submit</button>
 ```
 
 </details>
@@ -71,7 +129,28 @@ toggle(item: T): void
 ```
 
 ```
-CODE EXAMPLE
+// stores.ts
+
+import { ArrayStore } from 'butik';
+
+export const store = new ArrayStore<string>([]);
+```
+
+```
+// Svelte component
+
+<script lang="ts">
+  import { store } from '$lib/stores';
+
+  const options = ['item 1', 'item 2', 'item 3', 'item 4'];
+</script>
+
+{#each options as option}
+  <input type="checkbox"
+    checked={store.has(option)}
+    on:change={() => store.toggle(option)}
+  >
+{/each}
 ```
 
 </details>
@@ -84,7 +163,21 @@ toggle(): void
 ```
 
 ```
-CODE EXAMPLE
+// stores.ts
+
+import { BooleanStore } from 'butik';
+
+export const store = new BooleanStore(false);
+```
+
+```
+// Svelte component
+
+<script lang="ts">
+  import { store } from '$lib/stores';
+</script>
+
+<input type="checkbox" bind:checked={$store}/>
 ```
 
 </details>
@@ -98,7 +191,25 @@ add(amount: number): void
 ```
 
 ```
-CODE EXAMPLE
+// stores.ts
+
+import { NumberStore } from 'butik';
+
+export const numberStore = new NumberStore(0, 0);
+```
+
+```
+// Svelte component
+
+<script lang="ts">
+  import { numberStore } from '$lib/stores';
+</script>
+
+<input type="number"
+  bind:value={$numberStore}
+  min={numberStore.min}
+  max={numberStore.max}
+/>
 ```
 
 </details>
@@ -111,7 +222,27 @@ patch(partial: Partial<T>): void
 ```
 
 ```
-CODE EXAMPLE
+// stores.ts
+
+import { ObjectStore } from 'butik';
+
+export const objectStore = new ObjectStore({
+  name: 'John Doe',
+  age: 50
+});
+```
+
+```
+// Svelte component
+
+<script lang="ts">
+  import { objectStore } from '$lib/stores';
+</script>
+
+<input type="number"
+  value={$objectStore.age}
+  on:change={(e) => objectStore.patch({ age: e.currentTarget.valueAsNumber })}
+/>
 ```
 
 </details>
@@ -128,16 +259,37 @@ stop(): void
 ```
 
 ```
-CODE EXAMPLE
+// Svelte component
+
+<script lang="ts">
+  import { Tween } from 'butik';
+
+  const tween = new Tween(0, 3000);
+</script>
+
+<p style:fontSize={$tween}>{$tween}</p>
+<button on:click={() => tween.start(48)}>Start</button>
 ```
 
 </details>
 
 <details>
-<summary>Custom stores</summary>
+<summary>LocalStorage & SessionStorage</summary>
 
 ```
-CODE EXAMPLE
+syncToLocalStorage<T>(store: Store<T>, key: string): void
+syncToSessionStorage<T>(store: Store<T>, key: string): void
+```
+
+```
+// stores.ts
+
+export const objectStore = new ObjectStore({
+  name: 'John Doe',
+  age: 50
+});
+
+syncToLocalStorage(objectStore, 'local_storage_key');
 ```
 
 </details>
