@@ -36,7 +36,7 @@ export const store = new ArrayStore<string>([]);
 ```
 
 ## 🔨 API
-Even though this package is meant to be used with Svelte there is no hard link between them, thus it can be used anywhere.
+Even though this package is meant to be used with Svelte there is no hard link between them, meaning it can be used for any project.
 Butik's stores follows the [store contract](https://svelte.dev/docs#component-format-script-4-prefix-stores-with-$-to-access-their-values) allowing ```$```-prefixing for stuff like auto-subscriptions and two-way data binding.
 
 <details>
