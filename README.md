@@ -277,9 +277,13 @@ stop(): void
 <summary>LocalStorage & SessionStorage</summary>
 
 ```
-syncToLocalStorage<T>(store: Store<T>, key: string): void
-syncToSessionStorage<T>(store: Store<T>, key: string): void
+syncToLocalStorage<T>(store: Store<T>, key: string, handleExistingStorageValue?: (value: T) => void): void
+syncToSessionStorage<T>(store: Store<T>, key: string, handleExistingStorageValue?: (value: T) => void): void
 ```
+
+A custom handler can be added to the methods which has the current value in storage as argument. <br>
+If it is omitted, the store value will be overwritten to the value in storage if it exists. <br>
+If you are using [SvelteKit](https://github.com/sveltejs/kit), remember to wrap methods in `if (browser)`.
 
 ```
 // stores.ts
