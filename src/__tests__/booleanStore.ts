@@ -4,10 +4,10 @@ describe('BooleanStore', () => {
   const store = new BooleanStore(false);
 
   it('Can toggle value', () => {
-    expect(store.value).toBe(false);
+    expect(store.get()).toBe(false);
     store.toggle();
-    expect(store.value).toBe(true);
+    expect(store.get()).toBe(true);
     store.toggle();
-    expect(store.value).toBe(false);
+    expect(store.get()).toBe(false);
   });
 });

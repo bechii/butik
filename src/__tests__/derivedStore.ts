@@ -7,11 +7,11 @@ describe('DerivedStore', () => {
   });
 
   it('Can derive value from other store', () => {
-    expect(fromStore.value).toBe(0);
-    expect(store.value).toBe(0);
+    expect(fromStore.get()).toBe(0);
+    expect(store.get()).toBe(0);
     fromStore.set(5);
-    expect(fromStore.value).toBe(5);
-    expect(store.value).toBe(10);
+    expect(fromStore.get()).toBe(5);
+    expect(store.get()).toBe(10);
   });
 
   it('Dispatch changes', () => {

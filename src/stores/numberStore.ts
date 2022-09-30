@@ -21,6 +21,6 @@ export class NumberStore extends Store<number> {
 	}
 
   public add(amount: number): void {
-		this.value += amount;
+    this.set(this._value + amount);
 	}
 }

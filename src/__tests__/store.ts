@@ -4,9 +4,9 @@ describe('Store', () => {
   const store = new Store(0);
 
   it('Can set value', () => {
-    expect(store.value).toBe(0);
+    expect(store.get()).toBe(0);
     store.set(5);
-    expect(store.value).toBe(5);
+    expect(store.get()).toBe(5);
   });
 
   it('Dispatch changes', () => {

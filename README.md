@@ -36,18 +36,18 @@ export const store = new ArrayStore<string>([]);
 ```
 
 ## 🔨 API
-Even though this package is meant to be used with Svelte there is no hard link between them, meaning it can be used for any project.
+Even though this package is meant to be used with Svelte there is no hard link, meaning it can be used for any project.
 Butik's stores follows the [store contract](https://svelte.dev/docs#component-format-script-4-prefix-stores-with-$-to-access-their-values) allowing ```$```-prefixing for stuff like auto-subscriptions and two-way data binding.
 
 <details>
-<summary>IStore</summary>
+<summary>IReadonlyStore</summary>
 Interface implemented by Store and DerivedStore. All stores can be casted into this interface in order to make it read-only.
 The subscribe method returns a method to unsubscribe.
 <br>
 <br>
   
 ```
-get value(): T
+get value(): Readonly<T>
 subscribe(callback: (value: T) => void): () => void
 ```
 
@@ -55,13 +55,15 @@ subscribe(callback: (value: T) => void): () => void
 
 <details>
 <summary>Store</summary>
-This is the base class for all editable stores and can also be used on its own.
+Base class for all editable stores and can also be instantiated as itself.
 <br>
 <br>
   
 ```
-set value(value: T)
+get(): Readonly<T>
 set(value: T): void
+update(updater: (value: T) => T): void
+subscribe(callback: (value: T) => void): () => void
 ```
 
 ```
@@ -275,25 +277,5 @@ stop(): void
 
 <details>
 <summary>LocalStorage & SessionStorage</summary>
-
-```
-syncToLocalStorage<T>(store: Store<T>, key: string, handleExistingStorageValue?: (value: T) => void): void
-syncToSessionStorage<T>(store: Store<T>, key: string, handleExistingStorageValue?: (value: T) => void): void
-```
-
-A custom handler can be added to the methods which has the current value in storage as argument. <br>
-If it is omitted, the store value will be overwritten to the value in storage if it exists. <br>
-If you are using [SvelteKit](https://github.com/sveltejs/kit), remember to wrap methods in `if (browser)`.
-
-```
-// stores.ts
-
-export const objectStore = new ObjectStore({
-  name: 'John Doe',
-  age: 50
-});
-
-syncToLocalStorage(objectStore, 'local_storage_key');
-```
-
+Take a look at https://www.npmjs.com/package/svelte-store2storage
 </details>

@@ -1,28 +1,21 @@
 import { TypedEvent } from '../lib/typedEvent';
 import type { EventCallback } from '../lib/typedEvent';
 
-export interface IStore<T> {
-	readonly value: T;
-	subscribe(callback: EventCallback<T>): () => void;
+export interface IReadonlyStore<T> {
+  get(): Readonly<T>;
+  subscribe(callback: EventCallback<T>): () => void;
+}
+
+export interface IStore<T> extends IReadonlyStore<T> {
+  set(value: T): void;
+  update(updater: (value: T) => T): void;
 }
 
 export class Store<T> implements IStore<T> {
 	protected _value: T;
 	protected _changed: TypedEvent<T>;
 
-	public get value(): T {
-		return this._value;
-	}
-
-	public set value(value: T) {
-		const newValue = this.validate(value);
-		if (this._value !== newValue) {
-			this._value = newValue;
-			this.dispatch();
-		}
-	}
-
-  constructor(value: T) {
+  constructor(value: T = undefined) {
 		this._value = this.validate(value);
 		this._changed = new TypedEvent<T>();
 	}
@@ -35,9 +28,21 @@ export class Store<T> implements IStore<T> {
     this._changed.dispatch(this._value);
   }
 
+  public get(): Readonly<T> {
+    return this._value as Readonly<T>;
+  }
+
 	public set(value: T): void {
-		this.value = value;
+		const newValue = this.validate(value);
+		if (this._value !== newValue) {
+			this._value = newValue;
+			this.dispatch();
+		}
 	}
+
+  public update(updater: (value: T) => T): void {
+    this.set(updater(this._value));
+  }
 
 	public subscribe(callback: EventCallback<T>): (() => void) {
 		this._changed.addEventListener(callback);

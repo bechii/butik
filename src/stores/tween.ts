@@ -29,7 +29,7 @@ export class Tween extends Store<number> {
 		const initialValue: number = this._value;
 		this._timer.start(this.duration, (progress: number) => {
 			const t: number = progress / this.duration;
-			this.value = interpolate(initialValue, targetValue, this.easeMethod, t);
+			this.set(interpolate(initialValue, targetValue, this.easeMethod, t));
 
 			if (t === 1) {
         this._tweening = false;

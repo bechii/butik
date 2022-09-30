@@ -7,7 +7,7 @@ describe('ArrayStore', () => {
     expect(store.count()).toBe(0);
     store.add('item');
     expect(store.count()).toBe(1);
-    expect(store.value[0]).toBe('item');
+    expect(store.get()[0]).toBe('item');
   });
 
   it('Can remove one item', () => {
@@ -33,22 +33,22 @@ describe('ArrayStore', () => {
     store.add('a');
     store.remove((x) => x.length > 1);
     expect(store.count()).toBe(1);
-    expect(store.value[0]).toBe('a');
+    expect(store.get()[0]).toBe('a');
   });
 
   it('Can toggle an item', () => {
     expect(store.count()).toBe(1);
-    expect(store.value[0]).toBe('a');
+    expect(store.get()[0]).toBe('a');
     store.toggle('a');
     expect(store.count()).toBe(0);
     store.toggle('a');
     expect(store.count()).toBe(1);
-    expect(store.value[0]).toBe('a');
+    expect(store.get()[0]).toBe('a');
   });
 
   it('Can check if item is in array', () => {
     expect(store.count()).toBe(1);
-    expect(store.value[0]).toBe('a');
+    expect(store.get()[0]).toBe('a');
     expect(store.has('a')).toBe(true);
     expect(store.has('b')).toBe(false);
   });

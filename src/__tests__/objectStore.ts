@@ -15,17 +15,17 @@ describe('ObjectStore', () => {
   const store = new ObjectStore(object);
 
   it('Can patch object partially', () => {
-    expect(store.value.num).toBe(10);
-    expect(store.value.str).toBe('Object');
-    expect(store.value.bool).toBe(true);
+    expect(store.get().num).toBe(10);
+    expect(store.get().str).toBe('Object');
+    expect(store.get().bool).toBe(true);
 
     store.patch({
       num: 20,
       bool: false
     });
 
-    expect(store.value.num).toBe(20);
-    expect(store.value.str).toBe('Object');
-    expect(store.value.bool).toBe(false);
+    expect(store.get().num).toBe(20);
+    expect(store.get().str).toBe('Object');
+    expect(store.get().bool).toBe(false);
   });
 });
