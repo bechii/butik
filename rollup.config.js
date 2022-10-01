@@ -1,4 +1,5 @@
 import typescript from '@rollup/plugin-typescript';
+import del from 'rollup-plugin-delete';
 
 export default {
 	input: 'src/main.ts',
@@ -17,6 +18,7 @@ export default {
 	plugins: [
 		typescript({
 			tsconfig: './tsconfig.json'
-		})
+		}),
+    del({ targets: 'dist/*' })
 	]
 };
