@@ -1,14 +1,18 @@
 import { Store } from './store';
 
 export class NumberStore extends Store<number> {
-	public min: number | undefined;
-	public max: number | undefined;
+  public min: number | undefined;
+  public max: number | undefined;
 
-  constructor(value: number, min: number | undefined = undefined, max: number | undefined = undefined) {
-		super(value);
-		this.min = min;
-		this.max = max;
-	}
+  constructor(
+    value: number,
+    min: number | undefined = undefined,
+    max: number | undefined = undefined
+  ) {
+    super(value);
+    this.min = min;
+    this.max = max;
+  }
 
   protected validate(newValue: number): number {
     if (this.min != null && newValue < this.min) {
@@ -18,9 +22,9 @@ export class NumberStore extends Store<number> {
       return this.max;
     }
     return newValue;
-	}
+  }
 
   public add(amount: number): void {
     this.set(this._value + amount);
-	}
+  }
 }
