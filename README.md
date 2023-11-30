@@ -1,9 +1,11 @@
 [![NPM Version](https://img.shields.io/npm/v/butik.svg?style=for-the-badge)](https://www.npmjs.com/package/butik)
 
 # 🏪 butik
+
 A fresh alternative to [Svelte](https://github.com/sveltejs/svelte)'s built-in stores.
 
 ## 💾 Install
+
 ```bash
 npm i butik
 ```
@@ -36,8 +38,9 @@ export const store = new ArrayStore<string>([]);
 ```
 
 ## 🔨 API
+
 Even though this package is meant to be used with Svelte there is no hard link, meaning it can be used for any project.
-Butik's stores follows the [store contract](https://svelte.dev/docs#component-format-script-4-prefix-stores-with-$-to-access-their-values) allowing ```$```-prefixing for stuff like auto-subscriptions and two-way data binding.
+Butik's stores follows the [store contract](https://svelte.dev/docs#component-format-script-4-prefix-stores-with-$-to-access-their-values) allowing `$`-prefixing for stuff like auto-subscriptions and two-way data binding.
 
 <details>
 <summary>IReadonlyStore</summary>
@@ -45,7 +48,7 @@ Interface implemented by Store and DerivedStore. All stores can be casted into t
 The subscribe method returns a method to unsubscribe.
 <br>
 <br>
-  
+
 ```
 get value(): Readonly<T>
 subscribe(callback: (value: T) => void): () => void
@@ -58,7 +61,7 @@ subscribe(callback: (value: T) => void): () => void
 Base class for all editable stores and can also be instantiated as itself.
 <br>
 <br>
-  
+
 ```
 get(): Readonly<T>
 set(value: T): void
@@ -197,7 +200,7 @@ add(amount: number): void
 
 import { NumberStore } from 'butik';
 
-export const numberStore = new NumberStore(0, 0);
+export const numberStore = new NumberStore(0, 0, 10);
 ```
 
 ```
@@ -277,5 +280,20 @@ stop(): void
 
 <details>
 <summary>LocalStorage & SessionStorage</summary>
-Take a look at https://www.npmjs.com/package/svelte-store2storage
+
+```
+syncToLocalStorage<T>(store: IStore<T>, key: string, handleStorageValue?: (value: T) => void): void
+syncToSessionStorage<T>(store: IStore<T>, key: string, handleStorageValue?: (value: T) => void): void
+```
+
+```
+// stores.ts
+
+import { BooleanStore } from 'butik';
+
+export const store = new BooleanStore(false);
+
+syncToLocalStorage(store, 'storage_key');
+```
+
 </details>
