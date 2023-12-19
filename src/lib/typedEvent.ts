@@ -1,29 +1,29 @@
-export type EventCallback<T> = (value: T) => void;
+export type EventListener<T> = (value: T) => void;
 
 export interface ITypedEvent<T> {
-  addEventListener(callback: EventCallback<T>): void;
-  removeEventListener(callback: EventCallback<T>): void;
+  addEventListener(listener: EventListener<T>): void;
+  removeEventListener(listener: EventListener<T>): void;
 }
 
 export class TypedEvent<T> implements ITypedEvent<T> {
-  private readonly callbacks: Set<EventCallback<T>>;
+  private readonly listeners: Set<EventListener<T>>;
 
   constructor() {
-    this.callbacks = new Set();
+    this.listeners = new Set();
   }
 
-  public addEventListener(callback: EventCallback<T>): void {
-    this.callbacks.add(callback);
+  public addEventListener(listener: EventListener<T>): void {
+    this.listeners.add(listener);
   }
 
-  public removeEventListener(callback: EventCallback<T>): void {
-    this.callbacks.delete(callback);
+  public removeEventListener(listener: EventListener<T>): void {
+    this.listeners.delete(listener);
   }
 
   public dispatch(value: T): void {
-    const callbackArray = Array.from(this.callbacks.values());
-    for (const callback of callbackArray) {
-      callback(value);
+    const listenerArray = Array.from(this.listeners.values());
+    for (const listener of listenerArray) {
+      listener(value);
     }
   }
 }

@@ -1,14 +1,10 @@
 import { Store } from './store';
 
 export class NumberStore extends Store<number> {
-  public min: number | undefined;
-  public max: number | undefined;
+  public min?: number;
+  public max?: number;
 
-  constructor(
-    value: number,
-    min: number | undefined = undefined,
-    max: number | undefined = undefined
-  ) {
+  constructor(value: number, min?: number, max?: number) {
     super(value);
     this.min = min;
     this.max = max;

@@ -1,15 +1,20 @@
 import { TypedEvent } from '../lib/typedEvent';
-import type { EventCallback } from '../lib/typedEvent';
+import type { EventListener } from '../lib/typedEvent';
 
-export interface IReadonlyStore<T> {
-  get(): Readonly<T>;
-  subscribe(callback: EventCallback<T>): () => void;
+export interface ISubscribable<T> {
+  subscribe(listener: EventListener<T>): () => void;
 }
 
-export interface IStore<T> extends IReadonlyStore<T> {
+export interface IReadable<T> {
+  get(): Readonly<T>;
+}
+
+export interface IWritable<T> {
   set(value: T): void;
   update(updater: (value: T) => T): void;
 }
+
+export interface IStore<T> extends ISubscribable<T>, IReadable<T>, IWritable<T> {}
 
 export class Store<T> implements IStore<T> {
   protected _value: T;
@@ -44,9 +49,9 @@ export class Store<T> implements IStore<T> {
     this.set(updater(this._value));
   }
 
-  public subscribe(callback: EventCallback<T>): () => void {
-    this._changed.addEventListener(callback);
-    callback(this._value);
-    return (): void => this._changed.removeEventListener(callback);
+  public subscribe(listener: EventListener<T>): () => void {
+    this._changed.addEventListener(listener);
+    listener(this._value);
+    return () => this._changed.removeEventListener(listener);
   }
 }

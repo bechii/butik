@@ -39,19 +39,25 @@ export const store = new ArrayStore<string>([]);
 
 ## 🔨 API
 
-Even though this package is meant to be used with Svelte there is no hard link, meaning it can be used for any project.
+Even though this package is meant to be used with Svelte, it is framework agnostic.
 Butik's stores follows the [store contract](https://svelte.dev/docs#component-format-script-4-prefix-stores-with-$-to-access-their-values) allowing `$`-prefixing for stuff like auto-subscriptions and two-way data binding.
 
 <details>
-<summary>IReadonlyStore</summary>
-Interface implemented by Store and DerivedStore. All stores can be casted into this interface in order to make it read-only.
-The subscribe method returns a method to unsubscribe.
-<br>
-<br>
+<summary>Base interfaces</summary>
 
 ```
-get value(): Readonly<T>
-subscribe(callback: (value: T) => void): () => void
+interface ISubscribable<T> {
+  subscribe(listener: EventListener<T>): () => void;
+}
+
+interface IReadable<T> {
+  get(): Readonly<T>;
+}
+
+interface IWritable<T> {
+  set(value: T): void;
+  update(updater: (value: T) => T): void;
+}
 ```
 
 </details>
@@ -66,7 +72,7 @@ Base class for all editable stores and can also be instantiated as itself.
 get(): Readonly<T>
 set(value: T): void
 update(updater: (value: T) => T): void
-subscribe(callback: (value: T) => void): () => void
+subscribe(listener: (value: T) => void): () => void
 ```
 
 ```
@@ -93,7 +99,7 @@ export const store = new Store<string>('');
 <summary>DerivedStore</summary>
 
 ```
-constructor(store: IStore<T>, derive: (value: T) => U)
+constructor(store: ISubscribable<T>, derive: (value: T) => U)
 ```
 
 ```
@@ -280,10 +286,20 @@ stop(): void
 
 <details>
 <summary>LocalStorage & SessionStorage</summary>
+Utility methods to sync stores with localStorage and sessionStorage which returns a callback to unsync again.
+Besides receiving a store and a storage key as parameters, they can also have custom encoding logic.
+If no encoding options are passed, JSON.stringify and JSON.parse is used.
+<br>
+<br>
 
 ```
-syncToLocalStorage<T>(store: IStore<T>, key: string, handleStorageValue?: (value: T) => void): void
-syncToSessionStorage<T>(store: IStore<T>, key: string, handleStorageValue?: (value: T) => void): void
+interface EncodingOptions<T> {
+  encode?: (value: T) => string | undefined;
+  decode?: (value: string) => T;
+}
+
+syncToLocalStorage<T>(store: IStore<T>, key: string, encodingOptions?: EncodingOptions<T>): () => void
+syncToSessionStorage<T>(store: IStore<T>, key: string, encodingOptions?: EncodingOptions<T>): () => void
 ```
 
 ```

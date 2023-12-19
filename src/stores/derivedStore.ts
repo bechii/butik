@@ -1,27 +1,25 @@
-import { EventCallback, TypedEvent } from '../lib/typedEvent';
-import { IReadonlyStore } from './store';
+import { EventListener, TypedEvent } from '../lib/typedEvent';
+import { IReadable, ISubscribable } from './store';
 
-export type DeriveFunc<IN, OUT> = (value: IN) => OUT;
+export class DerivedStore<T, U> implements ISubscribable<U>, IReadable<U> {
+  private _value: U;
+  private _changed: TypedEvent<U>;
 
-export class DerivedStore<IN, OUT> implements IReadonlyStore<OUT> {
-  private _value: OUT;
-  private _changed: TypedEvent<OUT>;
-
-  constructor(store: IReadonlyStore<IN>, derive: DeriveFunc<IN, OUT>) {
-    this._changed = new TypedEvent<OUT>();
+  constructor(store: ISubscribable<T>, derive: (value: T) => U) {
+    this._changed = new TypedEvent<U>();
     store.subscribe((v) => {
       this._value = derive(v);
       this._changed.dispatch(this._value);
     });
   }
 
-  public get(): Readonly<OUT> {
-    return this._value as Readonly<OUT>;
+  public get(): Readonly<U> {
+    return this._value as Readonly<U>;
   }
 
-  public subscribe(callback: EventCallback<OUT>): () => void {
+  public subscribe(callback: EventListener<U>): () => void {
     this._changed.addEventListener(callback);
     callback(this._value);
-    return (): void => this._changed.removeEventListener(callback);
+    return () => this._changed.removeEventListener(callback);
   }
 }

@@ -3,21 +3,14 @@ import { Store } from './store';
 export type Predicate<T> = (value: T) => boolean;
 
 export class ArrayStore<T> extends Store<T[]> {
-  public get(): ReadonlyArray<T> {
-    return this._value as ReadonlyArray<T>;
-  }
-
   public count(): number {
     return this._value.length;
   }
 
   public has(arg: T | Predicate<T>): boolean {
-    if (typeof arg === 'function') {
-      const predicate = arg as Predicate<T>;
-      return this._value.some((x) => predicate(x));
-    } else {
-      return this._value.includes(arg);
-    }
+    return typeof arg === 'function'
+      ? this._value.some(arg as Predicate<T>)
+      : this._value.includes(arg);
   }
 
   public add(arg: T | T[]): void {
@@ -40,10 +33,6 @@ export class ArrayStore<T> extends Store<T[]> {
   }
 
   public toggle(item: T): void {
-    if (this.has(item)) {
-      this.remove(item);
-    } else {
-      this.add(item);
-    }
+    this.has(item) ? this.remove(item) : this.add(item);
   }
 }

@@ -1,4 +1,4 @@
-export { IStore, Store } from './store';
+export * from './store';
 export { ArrayStore } from './arrayStore';
 export { BooleanStore } from './booleanStore';
 export { DerivedStore } from './derivedStore';
