@@ -37,6 +37,9 @@ export const store = new ArrayStore<string>([]);
 {/each}
 ```
 
+## 📖 TS Docs
+Link to [tsdocs.dev](https://tsdocs.dev/docs/butik/3.0.0/modules.html)
+
 ## 🔨 API
 
 Even though this package is meant to be used with Svelte, it is framework agnostic.
